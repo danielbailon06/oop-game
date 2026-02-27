@@ -37,6 +37,7 @@ class Obstacle {
         this.positionX = Math.floor(Math.random() * (100 - this.width + 1));
         this.positionY = 100;
         this.createDomElement();
+        this.updateUI();
     }
 
     createDomElement() {
@@ -48,7 +49,7 @@ class Obstacle {
         parentElm.appendChild(this.obstacleElm);
     }
 
-    updateUI(){
+    updateUI() {
         this.obstacleElm.style.left = this.positionX + "vw";
         this.obstacleElm.style.bottom = this.positionY + "vh";
         this.obstacleElm.style.width = this.width + "vw";
@@ -70,13 +71,27 @@ const obstacleArr = []
 setInterval(() => {
     const newObstacle = new Obstacle();
     obstacleArr.push(newObstacle);
-}, 4000);
+}, 1000);
 
 // mover todos los obstaculos
 
 setInterval(() => {
     obstacleArr.forEach(function (obstacleInstance, i, arr) {
+
+        // mover
         obstacleInstance.moveDown()
+
+        // detectar colisiones
+        if (
+            player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
+            player.positionX + player.width > obstacleInstance.positionX &&
+            player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
+            player.positionY + player.height > obstacleInstance.positionY
+        ) {
+            console.log("game over bitch");
+
+            location.href = "gameover.html";
+        }
     })
 }, 30);
 
